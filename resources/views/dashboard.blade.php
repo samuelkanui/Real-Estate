@@ -1,4 +1,7 @@
 <x-app-layout>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </head>
     <style>
         .property-card {
             perspective: 1000px;
@@ -117,188 +120,219 @@
             </div>
         </div>
 
-        <!-- Property Grid -->
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            @for($i = 0; $i < 6; $i++)
-            <div class="property-card hover-scale">
-                <div class="card-inner">
-                    <!-- Front of Card -->
-                    <div class="card-front">
-                        <div class="relative h-64">
-                            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&h=600&q=80" 
-                                 class="w-full h-full object-cover rounded-t-xl">
-                            <div class="absolute top-4 right-4 blockchain-badge text-white px-4 py-2 rounded-full text-sm font-bold">
-                                Verified NFT
+            @php
+                $properties = [
+                    [
+                        'image' => 'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?auto=format&fit=crop&w=800&h=600&q=80',
+                        'title' => 'Luxury Modern Villa',
+                        'location' => 'Dubai Marina, UAE',
+                        'beds' => rand(3,6),
+                        'baths' => rand(2,4),
+                        'area' => rand(250,450),
+                        'price' => number_format(rand(40, 65)/10, 1).' ETH',
+                        'usd' => '$'.rand(1,2).'.'.rand(0,9).'M',
+                        'description' => 'Stunning contemporary villa with floor-to-ceiling windows, smart home automation, and private beach access.',
+                        'features' => ['Infinity Pool', 'Smart Home', 'Security', '3 Garages'],
+                        'contract' => '0x' . substr(str_shuffle(str_repeat('0123456789abcdef', 4)), 0, 8) // Generate a shorter random hex string
+                    ],
+                    [
+                        'image' => 'https://images.unsplash.com/photo-1605146769289-440113cc3d00?auto=format&fit=crop&w=800&h=600&q=80',
+                        'title' => 'Beachfront Penthouse',
+                        'location' => 'Miami Beach, USA',
+                        'beds' => rand(2,4),
+                        'baths' => rand(2,3),
+                        'area' => rand(180,300),
+                        'price' => number_format(rand(30, 55)/10, 1).' ETH',
+                        'usd' => '$'.rand(1,2).'.'.rand(0,9).'M',
+                        'description' => 'Luxurious penthouse with panoramic ocean views and direct beach access.',
+                        'features' => ['Rooftop Terrace', 'Home Theater', 'Concierge', '2 Garages'],
+                        'contract' => '0x' . substr(str_shuffle(str_repeat('0123456789abcdef', 4)), 0, 8)
+                    ],
+                    [
+                        'image' => 'https://images.pexels.com/photos/129112/pexels-photo-129112.jpeg', 
+                        'title' => 'Rustic Farmhouse',
+                        'location' => 'Tuscany, Italy',
+                        'beds' => 4,
+                        'baths' => 3,
+                        'area' => 350,
+                        'price' => '45.5 ETH',
+                        'usd' => '$1.8M',
+                        'description' => 'Charming farmhouse nestled in the Tuscan countryside, featuring breathtaking views and a tranquil setting.',
+                        'features' => ['Vineyard', 'Outdoor Kitchen', 'Fireplace', 'Large Garden'],
+                        'contract' => '0x' . substr(str_shuffle(str_repeat('0123456789abcdef', 4)), 0, 8)
+                    ],
+                ];
+            @endphp
+
+            @foreach($properties as $property)
+                <div class="property-card hover-scale">
+                    <div class="card-inner">
+                        <!-- Front of Card -->
+                        <div class="card-front">
+                            <div class="relative h-64">
+                                <img src="{{ $property['image'] }}" 
+                                     class="w-full h-full object-cover rounded-t-xl">
+                                <div class="absolute top-4 right-4 blockchain-badge text-white px-4 py-2 rounded-full text-sm font-bold">
+                                    Verified NFT
+                                </div>
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent p-4">
+                                    <h3 class="text-xl font-bold text-white">{{ $property['title'] }}</h3>
+                                    <div class="flex items-center space-x-2 mt-2">
+                                        <i class="fas fa-map-marker-alt text-emerald-400 text-sm"></i>
+                                        <span class="text-gray-300 text-sm">{{ $property['location'] }}</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent p-4">
-                                <h3 class="text-xl font-bold text-white">Luxury Modern Villa</h3>
-                                <div class="flex items-center space-x-2 mt-2">
-                                    <i class="fas fa-map-marker-alt text-emerald-400 text-sm"></i>
-                                    <span class="text-gray-300 text-sm">Dubai Marina, UAE</span>
+                            <div class="p-6">
+                                <div class="grid grid-cols-3 gap-4 mb-4">
+                                    <div class="text-center">
+                                        <div class="text-emerald-400 font-bold text-lg">{{ $property['beds'] }}</div>
+                                        <div class="text-xs text-gray-400 uppercase tracking-wide">Beds</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-emerald-400 font-bold text-lg">{{ $property['baths'] }}</div>
+                                        <div class="text-xs text-gray-400 uppercase tracking-wide">Baths</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-emerald-400 font-bold text-lg">{{ $property['area'] }}m²</div>
+                                        <div class="text-xs text-gray-400 uppercase tracking-wide">Area</div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center border-t border-gray-700 pt-4">
+                                    <div>
+                                        <div class="text-xs text-gray-400">Current Price</div>
+                                        <div class="text-2xl font-bold text-emerald-400">{{ $property['price'] }}</div>
+                                    </div>
+                                    <span class="text-xs text-emerald-400 bg-emerald-400/10 px-3 py-1 rounded-full">{{ $property['usd'] }}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="p-6">
-                            <div class="grid grid-cols-3 gap-4 mb-4">
-                                <div class="text-center">
-                                    <div class="text-emerald-400 font-bold text-lg">4</div>
-                                    <div class="text-xs text-gray-400 uppercase tracking-wide">Beds</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="text-emerald-400 font-bold text-lg">3</div>
-                                    <div class="text-xs text-gray-400 uppercase tracking-wide">Baths</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="text-emerald-400 font-bold text-lg">350m²</div>
-                                    <div class="text-xs text-gray-400 uppercase tracking-wide">Area</div>
-                                </div>
-                            </div>
-                            <div class="flex justify-between items-center border-t border-gray-700 pt-4">
+
+                        <!-- Back of Card -->
+                        <div class="card-back">
+                            <div class="h-full flex flex-col justify-between">
                                 <div>
-                                    <div class="text-xs text-gray-400">Current Price</div>
-                                    <div class="text-2xl font-bold text-emerald-400">5.2 ETH</div>
+                                    <h3 class="text-xl font-bold mb-4 text-white">Property Details</h3>
+                                    <div class="space-y-4">
+                                        <div class="bg-gray-700/30 p-3 rounded-lg">
+                                            <p class="text-sm text-gray-300 leading-relaxed">
+                                                {{ $property['description'] }}
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-2 gap-3">
+                                            @foreach($property['features'] as $feature)
+                                                <div class="flex items-center space-x-2 text-emerald-400">
+                                                    <i class="fas fa-{{ $feature == 'Security' ? 'shield-alt' : (strtolower($feature)) }} text-sm"></i>
+                                                    <span class="text-sm text-gray-300">{{ $feature }}</span>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                 </div>
-                                <span class="text-xs text-emerald-400 bg-emerald-400/10 px-3 py-1 rounded-full">$1.8M</span>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Back of Card -->
-                    <div class="card-back">
-                        <div class="h-full flex flex-col justify-between">
-                            <div>
-                                <h3 class="text-xl font-bold mb-4 text-white">Property Details</h3>
-                                <div class="space-y-4">
+                                <div class="mt-6">
                                     <div class="bg-gray-700/30 p-3 rounded-lg">
-                                        <p class="text-sm text-gray-300 leading-relaxed">
-                                            Stunning contemporary villa featuring floor-to-ceiling windows, smart home automation, 
-                                            and private beach access. Fully furnished with designer interiors.
-                                        </p>
-                                    </div>
-                                    
-                                    <div class="grid grid-cols-2 gap-3">
-                                        <div class="flex items-center space-x-2 text-emerald-400">
-                                            <i class="fas fa-swimming-pool text-sm"></i>
-                                            <span class="text-sm text-gray-300">Infinity Pool</span>
-                                        </div>
-                                        <div class="flex items-center space-x-2 text-emerald-400">
-                                            <i class="fas fa-wifi text-sm"></i>
-                                            <span class="text-sm text-gray-300">Smart Home</span>
-                                        </div>
-                                        <div class="flex items-center space-x-2 text-emerald-400">
-                                            <i class="fas fa-shield-alt text-sm"></i>
-                                            <span class="text-sm text-gray-300">Security</span>
-                                        </div>
-                                        <div class="flex items-center space-x-2 text-emerald-400">
-                                            <i class="fas fa-car text-sm"></i>
-                                            <span class="text-sm text-gray-300">3 Garages</span>
+                                        <div class="flex justify-between items-center text-sm">
+                                            <span class="text-gray-400">Contract Address:</span>
+                                            <span class="text-emerald-400 font-mono">{{ $property['contract'] }}</span>
                                         </div>
                                     </div>
+                                    <button class="w-full bg-emerald-500 hover:bg-emerald-600 px-6 py-3 rounded-lg font-medium transition-colors mt-4 text-sm flex items-center justify-center">
+                                        <i class="fas fa-wallet mr-2"></i>
+                                        Connect Wallet to Purchase
+                                    </button>
                                 </div>
-                            </div>
-
-                            <div class="mt-6">
-                                <div class="bg-gray-700/30 p-3 rounded-lg">
-                                    <div class="flex justify-between items-center text-sm">
-                                        <span class="text-gray-400">Contract Address:</span>
-                                        <span class="text-emerald-400 font-mono">0x1a2b...3c4d</span>
-                                    </div>
-                                </div>
-                                <button class="w-full bg-emerald-500 hover:bg-emerald-600 px-6 py-3 rounded-lg font-medium transition-colors mt-4 text-sm flex items-center justify-center">
-                                    <i class="fas fa-wallet mr-2"></i>
-                                    Connect Wallet to Purchase
-                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            @endfor
+            @endforeach
         </div>
-    </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 border-t border-gray-800 mt-24">
-        <div class="container mx-auto px-6 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- Company Info -->
-                <div class="space-y-4">
-                    <div class="flex items-center space-x-2">
-                        <img src="https://cdn-icons-png.flaticon.com/512/8059/8059008.png" 
-                             alt="BlockEstate Logo"
-                             class="w-8 h-8">
-                        <span class="text-xl font-bold">BlockEstate</span>
+        <!-- Footer -->
+        <footer class="bg-gray-900 border-t border-gray-800 mt-24">
+            <div class="container mx-auto px-6 py-12">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <!-- Company Info -->
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-2">
+                            <img src="https://cdn-icons-png.flaticon.com/512/8059/8059008.png" 
+                                 alt="BlockEstate Logo"
+                                 class="w-8 h-8">
+                            <span class="text-xl font-bold">BlockEstate</span>
+                        </div>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Revolutionizing real estate through blockchain technology. Secure, transparent, and efficient property transactions.
+                        </p>
                     </div>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        Revolutionizing real estate through blockchain technology. Secure, transparent, and efficient property transactions.
+
+                    <!-- Quick Links -->
+                    <div class="space-y-4">
+                        <h4 class="text-emerald-400 font-semibold mb-2">Quick Links</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm">About Us</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm">How It Works</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm">FAQ</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="space-y-4">
+                        <h4 class="text-emerald-400 font-semibold mb-2">Contact</h4>
+                        <ul class="space-y-2 text-gray-400 text-sm">
+                            <li class="flex items-center space-x-2">
+                                <i class="fas fa-map-marker-alt text-emerald-400"></i>
+                                <span>Blockchain Street, Crypto Valley</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fas fa-phone text-emerald-400"></i>
+                                <span>+1 (555) 123-4567</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fas fa-envelope text-emerald-400"></i>
+                                <span>info@blockestate.com</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Social & Payments -->
+                    <div class="space-y-4">
+                        <h4 class="text-emerald-400 font-semibold mb-2">Follow Us</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors">
+                                <i class="fab fa-telegram"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                        <div class="mt-4 border-t border-gray-800 pt-4">
+                            <h4 class="text-emerald-400 font-semibold mb-2">Accepted Payments</h4>
+                            <div class="flex space-x-3">
+                                <img src="https://cdn-icons-png.flaticon.com/512/825/825462.png" class="h-8" alt="Bitcoin">
+                                <img src="https://cdn-icons-png.flaticon.com/512/4125/4125333.png" class="h-8" alt="Ethereum">
+                                <img src="https://cdn-icons-png.flaticon.com/512/6001/6001367.png" class="h-8" alt="Binance">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Copyright -->
+                <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                    <p class="text-gray-500 text-sm">
+                        © 2024 BlockEstate. All rights reserved.<br>
+                        <span class="block mt-1 text-xs">Powered by Blockchain Technology</span>
                     </p>
                 </div>
-
-                <!-- Quick Links -->
-                <div class="space-y-4">
-                    <h4 class="text-emerald-400 font-semibold mb-2">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm">About Us</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm">How It Works</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm">FAQ</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors text-sm">Privacy Policy</a></li>
-                    </ul>
-                </div>
-
-                <!-- Contact -->
-                <div class="space-y-4">
-                    <h4 class="text-emerald-400 font-semibold mb-2">Contact</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li class="flex items-center space-x-2">
-                            <i class="fas fa-map-marker-alt text-emerald-400"></i>
-                            <span>Blockchain Street, Crypto Valley</span>
-                        </li>
-                        <li class="flex items-center space-x-2">
-                            <i class="fas fa-phone text-emerald-400"></i>
-                            <span>+1 (555) 123-4567</span>
-                        </li>
-                        <li class="flex items-center space-x-2">
-                            <i class="fas fa-envelope text-emerald-400"></i>
-                            <span>info@blockestate.com</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Social & Payments -->
-                <div class="space-y-4">
-                    <h4 class="text-emerald-400 font-semibold mb-2">Follow Us</h4>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors">
-                            <i class="fab fa-telegram"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-emerald-400 transition-colors">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                    <div class="mt-4 border-t border-gray-800 pt-4">
-                        <h4 class="text-emerald-400 font-semibold mb-2">Accepted Payments</h4>
-                        <div class="flex space-x-3">
-                            <img src="https://cdn-icons-png.flaticon.com/512/825/825462.png" class="h-8" alt="Bitcoin">
-                            <img src="https://cdn-icons-png.flaticon.com/512/4125/4125333.png" class="h-8" alt="Ethereum">
-                            <img src="https://cdn-icons-png.flaticon.com/512/6001/6001367.png" class="h-8" alt="Binance">
-                        </div>
-                    </div>
-                </div>
             </div>
-
-            <!-- Copyright -->
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
-                <p class="text-gray-500 text-sm">
-                    © 2024 BlockEstate. All rights reserved.<br>
-                    <span class="block mt-1 text-xs">Powered by Blockchain Technology</span>
-                </p>
-            </div>
-        </div>
-    </footer>
+        </footer>
 </x-app-layout>
